@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from storage.istorage import IStorage
+
 
 class IStorage(ABC):
     """

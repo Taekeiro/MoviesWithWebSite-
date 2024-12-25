@@ -1,6 +1,6 @@
 import csv
 import requests
-from istorage import IStorage
+from storage.istorage import IStorage
 
 class StorageCsv(IStorage):
     """
@@ -13,9 +13,6 @@ class StorageCsv(IStorage):
         self.api_url = "http://www.omdbapi.com/"
 
     def list_movies(self):
-        """
-        Retrieve a dictionary of all movies stored.
-        """
         movies = {}
         try:
             with open(self.file_path, 'r') as file:
@@ -32,9 +29,6 @@ class StorageCsv(IStorage):
         return movies
 
     def add_movie(self, title):
-        """
-        Fetch movie data from the OMDb API and add it to the storage.
-        """
         response = requests.get(self.api_url, params={"t": title, "apikey": self.api_key})
         if response.status_code != 200:
             print("Error: Unable to reach the API. Please check your connection.")
@@ -66,9 +60,6 @@ class StorageCsv(IStorage):
         print(f"Movie '{movie_data['title']}' added successfully.")
 
     def delete_movie(self, title):
-        """
-        Remove a movie from the storage by title.
-        """
         movies = self.list_movies()
         if title not in movies:
             raise ValueError(f"Movie '{title}' not found.")
@@ -81,9 +72,6 @@ class StorageCsv(IStorage):
                 writer.writerow({'title': title, 'year': details['year'], 'rating': details['rating'], 'poster': details['poster']})
 
     def update_movie(self, title, rating):
-        """
-        Update the rating of a movie in the storage.
-        """
         movies = self.list_movies()
         if title not in movies:
             raise ValueError(f"Movie '{title}' not found.")
