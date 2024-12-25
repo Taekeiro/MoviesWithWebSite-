@@ -2,6 +2,7 @@ import random
 import requests
 import os
 
+
 class MovieApp:
     """
     A class that manages the movie application logic.

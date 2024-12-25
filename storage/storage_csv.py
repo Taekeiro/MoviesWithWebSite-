@@ -2,6 +2,7 @@ import csv
 import requests
 from storage.istorage import IStorage
 
+
 class StorageCsv(IStorage):
     """
     CSV storage implementation of the IStorage interface.
@@ -69,7 +70,10 @@ class StorageCsv(IStorage):
             writer = csv.DictWriter(file, fieldnames=['title', 'year', 'rating', 'poster'])
             writer.writeheader()
             for title, details in movies.items():
-                writer.writerow({'title': title, 'year': details['year'], 'rating': details['rating'], 'poster': details['poster']})
+                writer.writerow({'title': title,
+                                 'year': details['year'],
+                                 'rating': details['rating'],
+                                 'poster': details['poster']})
 
     def update_movie(self, title, rating):
         movies = self.list_movies()
@@ -81,4 +85,7 @@ class StorageCsv(IStorage):
             writer = csv.DictWriter(file, fieldnames=['title', 'year', 'rating', 'poster'])
             writer.writeheader()
             for title, details in movies.items():
-                writer.writerow({'title': title, 'year': details['year'], 'rating': details['rating'], 'poster': details['poster']})
+                writer.writerow({'title': title,
+                                 'year': details['year'],
+                                 'rating': details['rating'],
+                                 'poster': details['poster']})
