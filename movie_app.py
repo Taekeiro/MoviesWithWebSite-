@@ -34,6 +34,20 @@ class MovieApp:
         title = input("Enter the movie title: ").strip()
         self._storage.add_movie(title)
 
+    def _command_update_movie(self):
+        """
+        Update a movie's rating.
+        """
+        title = input("Enter the title of the movie to update: ").strip()
+        try:
+            new_rating = float(input("Enter the new rating: ").strip())
+            if new_rating < 0.0 or new_rating > 10.0:
+                raise ValueError("Rating must be between 0.0 and 10.0.")
+            self._storage.update_movie(title, new_rating)
+            print(f"Movie '{title}' updated successfully.")
+        except ValueError as e:
+            print(e)
+
     def _command_delete_movie(self):
         """
         Delete a movie from the storage.
@@ -140,6 +154,24 @@ class MovieApp:
 
         print(f"Website generated successfully: {output_path}")
 
+    def _command_movie_stats(self):
+        """
+        Display statistics about the movies.
+        """
+        movies = self._storage.list_movies()
+        if not movies:
+            print("No movies available.")
+            return
+
+        ratings = [details["rating"] for details in movies.values()]
+        average_rating = sum(ratings) / len(ratings)
+        highest_rated = max(movies.items(), key=lambda x: x[1]["rating"])
+        lowest_rated = min(movies.items(), key=lambda x: x[1]["rating"])
+
+        print(f"Average Rating: {average_rating:.2f}")
+        print(f"Highest Rated Movie: {highest_rated[0]} ({highest_rated[1]['rating']})")
+        print(f"Lowest Rated Movie: {lowest_rated[0]} ({lowest_rated[1]['rating']})")
+
     def run(self):
         """
         Run the movie application.
@@ -148,12 +180,14 @@ class MovieApp:
             print("\nMenu:")
             print("1. List movies")
             print("2. Add a movie")
-            print("3. Delete a movie")
-            print("4. Random movie")
-            print("5. Search movie")
-            print("6. Sort movies by year")
-            print("7. Sort movies by rating")
-            print("8. Generate website")
+            print("3. Update a movie")
+            print("4. Delete a movie")
+            print("5. Random movie")
+            print("6. Search movie")
+            print("7. Sort movies by year")
+            print("8. Sort movies by rating")
+            print("9. Generate website")
+            print("10. Show movie statistics")
             print("0. Exit")
 
             choice = input("Choose an option: ").strip()
@@ -162,17 +196,21 @@ class MovieApp:
             elif choice == '2':
                 self._command_add_movie()
             elif choice == '3':
-                self._command_delete_movie()
+                self._command_update_movie()
             elif choice == '4':
-                self._command_random_movie()
+                self._command_delete_movie()
             elif choice == '5':
-                self._command_search_movie()
+                self._command_random_movie()
             elif choice == '6':
-                self._command_sort_by_year()
+                self._command_search_movie()
             elif choice == '7':
-                self._command_sort_by_rating()
+                self._command_sort_by_year()
             elif choice == '8':
+                self._command_sort_by_rating()
+            elif choice == '9':
                 self._generate_website()
+            elif choice == '10':
+                self._command_movie_stats()
             elif choice == '0':
                 print("Goodbye!")
                 break
